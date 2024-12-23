@@ -18,11 +18,17 @@ inline json decode_bencoded_string(const std::string &encoded_string, size_t &po
         std::cerr << "Malformed Bencode: String: Length exceeds input size.\n";
         exit(1);
     }
-    const char* binary_data = encoded_string.data() + colon_index + 1;
-    size_t binary_size = static_cast<size_t>(number);
-    pos = colon_index + 1 + binary_size;
-    std::vector<std::uint8_t> binary_vec(binary_data, binary_data + binary_size);
-    return json::binary_t(binary_vec);
+    // // IF YOU WANT BINARY DATA
+    // const char* binary_data = encoded_string.data() + colon_index + 1;
+    // size_t binary_size = static_cast<size_t>(number);
+    // pos = colon_index + 1 + binary_size;
+    // std::vector<std::uint8_t> binary_vec(binary_data, binary_data + binary_size);
+    // return json::binary_t(binary_vec);
+
+    // IF YOU WANT STRING IN CHARS
+    pos = colon_index + number + 1;
+    std::string str = encoded_string.substr(colon_index + 1, number);
+    return json(str);
 }
 
 inline json decode_bencoded_integer(const std::string &encoded_integer, size_t &pos) {
